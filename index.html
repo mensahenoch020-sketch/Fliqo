@@ -1,1092 +1,451 @@
-<!DOCTYPE html>
-
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Fliqo — Trade Gift Cards for Naira Instantly</title>
+<meta name="color-scheme" content="dark"/>
+<meta name="theme-color" content="#08080e"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
-–bg:#08080e;
-–surface:#0f0f1a;
-–surface2:#141424;
-–border:rgba(255,255,255,0.06);
-–border2:rgba(255,255,255,0.11);
-–text:#eeeef5;
-–muted:#636380;
-–muted2:#9898b8;
-–accent:#0dffb0;
-–accent-dim:rgba(13,255,176,0.12);
-–accent-glow:rgba(13,255,176,0.25);
-–gold:#ffd166;
-–blue:#4f8bff;
+--bg:#08080e;--surface:#0f0f1a;--surface2:#141424;
+--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
+--text:#eeeef5;--muted:#636380;--muted2:#9898b8;
+--accent:#0dffb0;--accent-dim:rgba(13,255,176,0.12);--accent-glow:rgba(13,255,176,0.25);
+--gold:#ffd166;--blue:#4f8bff;--neon-pink:#ff2d78;--neon-blue:#00d4ff;--neon-purple:#a855f7;
 }
-
-html{scroll-behavior:smooth}
-
-body{
-background:var(–bg);
-color:var(–text);
-font-family:‘Cabinet Grotesk’,sans-serif;
-font-size:16px;
-line-height:1.6;
-overflow-x:hidden;
-cursor:none;
-}
-
-/* ── CUSTOM CURSOR ── */
-.cursor{
-position:fixed;
-width:10px;height:10px;
-background:var(–accent);
-border-radius:50%;
-pointer-events:none;
-z-index:9999;
-transform:translate(-50%,-50%);
-transition:transform 0.1s,width 0.3s,height 0.3s,opacity 0.3s;
-mix-blend-mode:difference;
-}
-.cursor-ring{
-position:fixed;
-width:36px;height:36px;
-border:1px solid rgba(13,255,176,0.4);
-border-radius:50%;
-pointer-events:none;
-z-index:9998;
-transform:translate(-50%,-50%);
-transition:transform 0.15s ease-out,width 0.3s,height 0.3s;
-}
-
-/* ── GRAIN ── */
-body::after{
-content:’’;
-position:fixed;inset:0;
-background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 512 512’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.75’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.035’/%3E%3C/svg%3E”);
-pointer-events:none;z-index:0;opacity:.5;
-}
-
-/* ── NAV ── */
-nav{
-position:fixed;top:0;left:0;right:0;z-index:100;
-display:flex;align-items:center;justify-content:space-between;
-padding:20px 52px;
-border-bottom:1px solid var(–border);
-background:rgba(8,8,14,0.75);
-backdrop-filter:blur(24px);
-}
-
-/* ── FLIQO LOGO ANIMATION ── */
-.logo-wrap{
-display:flex;align-items:center;gap:12px;
-text-decoration:none;
-}
-
-.logo-icon{
-position:relative;
-width:36px;height:36px;
-}
-
-.logo-icon svg{
-width:36px;height:36px;
-overflow:visible;
-}
-
-.logo-f{
-font-family:‘Clash Display’,sans-serif;
-font-size:26px;
-font-weight:700;
-fill:var(–bg);
-}
-
-.logo-bg{
-fill:var(–accent);
-rx:9;
-}
-
-/* Animated dash/arrow inside logo */
-.logo-arrow{
-stroke:var(–bg);
-stroke-width:2.5;
-fill:none;
-stroke-linecap:round;
-stroke-dasharray:20;
-stroke-dashoffset:20;
-animation:dashIn 0.6s ease 0.8s forwards;
-}
-
-@keyframes dashIn{
-to{stroke-dashoffset:0}
-}
-
-/* ── FLIQO TEXT ANIMATION ── */
-.logo-text{
-font-family:‘Clash Display’,sans-serif;
-font-size:22px;
-font-weight:700;
-letter-spacing:-0.5px;
-display:flex;
-overflow:hidden;
-}
-
-.logo-text span{
-display:inline-block;
-animation:letterDrop 0.5s cubic-bezier(0.23,1,0.32,1) both;
-color:var(–text);
-}
-
-.logo-text span:nth-child(1){animation-delay:0.1s}
-.logo-text span:nth-child(2){animation-delay:0.15s}
-.logo-text span:nth-child(3){animation-delay:0.2s}
-.logo-text span:nth-child(4){animation-delay:0.25s}
-.logo-text span:nth-child(5){animation-delay:0.3s}
-
-@keyframes letterDrop{
-from{opacity:0;transform:translateY(-20px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-/* Green dot after Fliqo */
-.logo-dot{
-width:6px;height:6px;
-background:var(–accent);
-border-radius:50%;
-display:inline-block;
-align-self:center;
-margin-left:2px;
-animation:scalePop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.5s both;
-}
-
-@keyframes scalePop{
-from{transform:scale(0)}
-to{transform:scale(1)}
-}
-
-.nav-links{
-display:flex;align-items:center;gap:36px;list-style:none;
-}
-
-.nav-links a{
-color:var(–muted2);text-decoration:none;
-font-size:14px;font-weight:500;
-transition:color 0.2s;
-letter-spacing:0.2px;
-}
+html{scroll-behavior:smooth;background:#08080e}
+body{background:#08080e!important;background-color:#08080e!important;color:#eeeef5!important;font-family:'Cabinet Grotesk',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;color-scheme:dark;}/* AMBIENT */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.ambient-blob{position:absolute;border-radius:50%;filter:blur(120px);animation:blobDrift 20s ease-in-out infinite alternate;}
+.ab1{width:600px;height:600px;background:var(–accent);top:-200px;left:-150px;opacity:0.12;animation-delay:0s;}
+.ab2{width:500px;height:500px;background:var(–neon-blue);top:30%;right:-200px;opacity:0.08;animation-delay:-7s;}
+.ab3{width:400px;height:400px;background:var(–neon-pink);bottom:20%;left:10%;opacity:0.07;animation-delay:-14s;}
+.ab4{width:350px;height:350px;background:var(–neon-purple);bottom:-100px;right:15%;opacity:0.09;animation-delay:-3s;}
+@keyframes blobDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.1)}}
+/* GRAIN */
+body::after{content:’’;position:fixed;inset:0;background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 512 512’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.75’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.035’/%3E%3C/svg%3E”);pointer-events:none;z-index:0;opacity:.45;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;border-bottom:1px solid var(–border);background:rgba(8,8,14,0.82);backdrop-filter:blur(24px);}
+.logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-icon{width:36px;height:36px;}
+.logo-icon svg{width:36px;height:36px;overflow:visible;}
+.logo-arrow{stroke:#08080e;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-dasharray:20;stroke-dashoffset:20;animation:dashIn 0.6s ease 0.8s forwards;}
+@keyframes dashIn{to{stroke-dashoffset:0}}
+.logo-text{font-family:‘Clash Display’,sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;display:flex;overflow:hidden;}
+.logo-text span{display:inline-block;color:var(–text);animation:letterDrop 0.5s cubic-bezier(0.23,1,0.32,1) both;}
+.logo-text span:nth-child(1){animation-delay:0.1s}.logo-text span:nth-child(2){animation-delay:0.15s}.logo-text span:nth-child(3){animation-delay:0.2s}.logo-text span:nth-child(4){animation-delay:0.25s}.logo-text span:nth-child(5){animation-delay:0.3s}
+@keyframes letterDrop{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
+.nav-links a{color:var(–muted2);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;}
 .nav-links a:hover{color:var(–text)}
-
-.nav-cta{
-background:var(–accent)!important;
-color:#000!important;
-padding:9px 22px;
-border-radius:8px;
-font-weight:700!important;
-font-size:13px!important;
-letter-spacing:0.3px;
-transition:box-shadow 0.2s,transform 0.2s!important;
-}
-.nav-cta:hover{
-box-shadow:0 0 20px var(–accent-glow)!important;
-transform:translateY(-1px)!important;
-}
-
-/* ── HERO ── */
-.hero{
-position:relative;
-min-height:100vh;
-display:flex;flex-direction:column;
-align-items:center;justify-content:center;
-text-align:center;
-padding:130px 24px 80px;
-overflow:hidden;
-z-index:1;
-}
-
-/* Mesh gradient background */
-.hero-mesh{
-position:absolute;inset:0;
-background:
-radial-gradient(ellipse 60% 50% at 50% 0%, rgba(13,255,176,0.08) 0%, transparent 60%),
-radial-gradient(ellipse 40% 40% at 80% 60%, rgba(79,139,255,0.06) 0%, transparent 50%),
-radial-gradient(ellipse 30% 30% at 20% 70%, rgba(255,209,102,0.04) 0%, transparent 50%);
-pointer-events:none;
-}
-
-/* Grid lines */
-.hero-grid{
-position:absolute;inset:0;
-background-image:
-linear-gradient(var(–border) 1px, transparent 1px),
-linear-gradient(90deg, var(–border) 1px, transparent 1px);
-background-size:60px 60px;
-mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 80%);
-pointer-events:none;
-opacity:0.5;
-}
-
-.hero-badge{
-display:inline-flex;align-items:center;gap:8px;
-background:rgba(13,255,176,0.07);
-border:1px solid rgba(13,255,176,0.18);
-border-radius:100px;
-padding:7px 16px;
-font-size:12px;font-weight:600;
-color:var(–accent);
-margin-bottom:32px;
-letter-spacing:0.5px;
-text-transform:uppercase;
-animation:fadeUp 0.7s ease 0.3s both;
-}
-
-.live-dot{
-width:7px;height:7px;
-background:var(–accent);
-border-radius:50%;
-position:relative;
-}
-.live-dot::after{
-content:’’;
-position:absolute;inset:-3px;
-background:var(–accent);
-border-radius:50%;
-opacity:0.3;
-animation:ping 1.8s ease infinite;
-}
-@keyframes ping{
-0%{transform:scale(1);opacity:0.3}
-70%{transform:scale(2);opacity:0}
-100%{transform:scale(1);opacity:0}
-}
-
-/* ── BIG HERO TITLE with letter animation ── */
-.hero-title{
-font-family:‘Clash Display’,sans-serif;
-font-size:clamp(48px,8vw,96px);
-font-weight:700;
-line-height:1.0;
-letter-spacing:-3px;
-max-width:900px;
-margin-bottom:28px;
-position:relative;
-}
-
-.hero-title .word{
-display:inline-block;
-overflow:hidden;
-vertical-align:bottom;
-margin-right:0.2em;
-}
-
-.hero-title .word span{
-display:inline-block;
-animation:wordReveal 0.8s cubic-bezier(0.16,1,0.3,1) both;
-}
-
-.hero-title .word:nth-child(1) span{animation-delay:0.4s}
-.hero-title .word:nth-child(2) span{animation-delay:0.55s}
-.hero-title .word:nth-child(3) span{animation-delay:0.7s}
-.hero-title .word:nth-child(4) span{animation-delay:0.85s}
-
-@keyframes wordReveal{
-from{transform:translateY(110%);opacity:0}
-to{transform:translateY(0);opacity:1}
-}
-
-.hero-title .accent-word{
-color:var(–accent);
-position:relative;
-}
-
-.hero-title .accent-word::after{
-content:’’;
-position:absolute;
-bottom:-4px;left:0;right:0;
-height:3px;
-background:linear-gradient(90deg,var(–accent),transparent);
-border-radius:2px;
-animation:lineGrow 0.6s ease 1.2s both;
-transform-origin:left;
-}
-
-@keyframes lineGrow{
-from{transform:scaleX(0)}
-to{transform:scaleX(1)}
-}
-
-.hero-sub{
-font-size:18px;
-color:var(–muted2);
-max-width:480px;
-font-weight:400;
-line-height:1.7;
-margin-bottom:44px;
-animation:fadeUp 0.7s ease 1s both;
-}
-
-.hero-actions{
-display:flex;gap:14px;align-items:center;
-flex-wrap:wrap;justify-content:center;
-animation:fadeUp 0.7s ease 1.1s both;
-}
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(28px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-.btn-primary{
-background:var(–accent);
-color:#000;border:none;
-padding:15px 30px;border-radius:10px;
-font-size:15px;font-weight:800;
-font-family:‘Cabinet Grotesk’,sans-serif;
-cursor:none;
-transition:transform 0.2s,box-shadow 0.2s;
-display:flex;align-items:center;gap:9px;
-text-decoration:none;letter-spacing:0.2px;
-}
-.btn-primary:hover{
-transform:translateY(-3px);
-box-shadow:0 12px 40px var(–accent-glow);
-}
-
-.btn-secondary{
-background:transparent;color:var(–text);
-border:1px solid var(–border2);
-padding:15px 30px;border-radius:10px;
-font-size:15px;font-weight:500;
-font-family:‘Cabinet Grotesk’,sans-serif;
-cursor:none;
-transition:border-color 0.2s,transform 0.2s,background 0.2s;
-display:flex;align-items:center;gap:9px;
-text-decoration:none;
-}
-.btn-secondary:hover{
-border-color:rgba(255,255,255,0.2);
-transform:translateY(-3px);
-background:rgba(255,255,255,0.03);
-}
-
-/* ── STATS ── */
-.stats-bar{
-display:flex;align-items:center;gap:0;
-margin-top:64px;
-background:var(–surface);
-border:1px solid var(–border2);
-border-radius:16px;
-overflow:hidden;
-animation:fadeUp 0.7s ease 1.2s both;
-}
-
-.stat{
-flex:1;
-padding:22px 28px;
-text-align:center;
-border-right:1px solid var(–border);
-position:relative;
-overflow:hidden;
-}
+.nav-cta{background:var(–accent)!important;color:#000!important;padding:9px 22px;border-radius:8px;font-weight:700!important;font-size:13px!important;transition:box-shadow 0.2s,transform 0.2s!important;}
+.nav-cta:hover{box-shadow:0 0 24px var(–accent-glow)!important;transform:translateY(-1px)!important;}
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 24px 80px;overflow:hidden;z-index:1;}
+.hero-mesh{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% -10%, rgba(13,255,176,0.1) 0%, transparent 55%),radial-gradient(ellipse 45% 45% at 85% 65%, rgba(0,212,255,0.07) 0%, transparent 50%),radial-gradient(ellipse 35% 35% at 15% 75%, rgba(255,45,120,0.05) 0%, transparent 50%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(13,255,176,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(13,255,176,0.04) 1px, transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 80%);pointer-events:none;}
+.hero-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(13,255,176,0.008) 3px,rgba(13,255,176,0.008) 4px);pointer-events:none;opacity:0.5;}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(13,255,176,0.05);border:1px solid rgba(13,255,176,0.2);border-radius:6px;padding:7px 18px;font-size:11px;font-weight:700;color:var(–accent);margin-bottom:32px;letter-spacing:2px;text-transform:uppercase;animation:fadeUp 0.7s ease 0.3s both;box-shadow:0 0 20px rgba(13,255,176,0.05),inset 0 1px 0 rgba(13,255,176,0.1);}
+.live-indicator{display:flex;align-items:center;gap:5px;}
+.live-bar{width:16px;height:2px;background:var(–accent);border-radius:1px;box-shadow:0 0 6px var(–accent);position:relative;overflow:hidden;}
+.live-bar::after{content:’’;position:absolute;inset:0;background:linear-gradient(90deg,transparent,white,transparent);animation:barScan 2s linear infinite;}
+@keyframes barScan{from{transform:translateX(-100%)}to{transform:translateX(200%)}}
+.hero-title{font-family:‘Clash Display’,sans-serif;font-size:clamp(48px,8vw,96px);font-weight:700;line-height:1.0;letter-spacing:-3px;max-width:900px;margin-bottom:28px;}
+.hero-title .word{display:inline-block;overflow:hidden;vertical-align:bottom;margin-right:0.2em;}
+.hero-title .word span{display:inline-block;animation:wordReveal 0.8s cubic-bezier(0.16,1,0.3,1) both;}
+.hero-title .word:nth-child(1) span{animation-delay:0.4s}.hero-title .word:nth-child(2) span{animation-delay:0.55s}.hero-title .word:nth-child(3) span{animation-delay:0.7s}.hero-title .word:nth-child(4) span{animation-delay:0.85s}
+@keyframes wordReveal{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+.hero-title .accent-word{color:var(–accent);position:relative;text-shadow:0 0 40px rgba(13,255,176,0.4),0 0 80px rgba(13,255,176,0.15);}
+.hero-title .accent-word::after{content:’’;position:absolute;bottom:-4px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(–accent),rgba(13,255,176,0.2));border-radius:1px;animation:lineGrow 0.6s ease 1.2s both;transform-origin:left;box-shadow:0 0 8px var(–accent);}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero-sub{font-size:18px;color:var(–muted2);max-width:480px;font-weight:400;line-height:1.7;margin-bottom:36px;animation:fadeUp 0.7s ease 1s both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.7s ease 1.1s both;}
+.btn-primary{background:var(–accent);color:#000;border:none;padding:15px 30px;border-radius:8px;font-size:15px;font-weight:800;font-family:‘Cabinet Grotesk’,sans-serif;transition:transform 0.2s,box-shadow 0.2s;display:flex;align-items:center;gap:9px;text-decoration:none;letter-spacing:0.2px;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(–accent-glow),0 0 60px rgba(13,255,176,0.12);}
+.btn-secondary{background:transparent;color:var(–text);border:1px solid var(–border2);padding:15px 30px;border-radius:8px;font-size:15px;font-weight:500;font-family:‘Cabinet Grotesk’,sans-serif;transition:border-color 0.2s,transform 0.2s,background 0.2s;display:flex;align-items:center;gap:9px;text-decoration:none;}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-3px);background:rgba(255,255,255,0.03);}
+/* HERO MICROCOPY */
+.hero-microcopy{display:flex;align-items:center;gap:20px;margin-top:14px;animation:fadeUp 0.7s ease 1.15s both;flex-wrap:wrap;justify-content:center;}
+.micro-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(–muted);}
+.micro-check{width:15px;height:15px;border-radius:3px;background:rgba(13,255,176,0.08);border:1px solid rgba(13,255,176,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.micro-check svg{width:9px;height:9px;stroke:var(–accent);stroke-width:2.5;fill:none;}
+/* LIVE COUNTER */
+.live-counter-wrap{display:flex;align-items:center;gap:10px;margin-top:24px;animation:fadeUp 0.7s ease 1.18s both;background:rgba(13,255,176,0.04);border:1px solid rgba(13,255,176,0.1);border-radius:8px;padding:8px 18px;font-size:13px;color:var(–muted2);}
+.counter-val{font-family:‘Clash Display’,sans-serif;font-size:16px;font-weight:700;color:var(–accent);}
+.counter-pulse{width:6px;height:6px;background:var(–accent);border-radius:50%;box-shadow:0 0 8px var(–accent);animation:cpulse 2s ease-in-out infinite;}
+@keyframes cpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:0.5}}
+/* STATS */
+.stats-bar{display:flex;align-items:center;margin-top:40px;background:var(–surface);border:1px solid var(–border2);border-radius:12px;overflow:hidden;animation:fadeUp 0.7s ease 1.2s both;position:relative;}
+.stats-bar::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(–accent),var(–neon-blue),var(–accent),transparent);opacity:0.4;}
+.stat{flex:1;padding:22px 28px;text-align:center;border-right:1px solid var(–border);position:relative;overflow:hidden;}
 .stat:last-child{border-right:none}
-
-.stat::before{
-content:’’;
-position:absolute;inset:0;
-background:linear-gradient(135deg,transparent 60%,rgba(13,255,176,0.03));
-opacity:0;
-transition:opacity 0.3s;
-}
+.stat::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(13,255,176,0.03));opacity:0;transition:opacity 0.3s;}
 .stat:hover::before{opacity:1}
-
-.stat-num{
-font-family:‘Clash Display’,sans-serif;
-font-size:30px;font-weight:700;
-letter-spacing:-1px;
-color:var(–text);
-display:block;
-}
-
-.stat-label{
-font-size:11px;color:var(–muted);
-text-transform:uppercase;letter-spacing:1px;
-font-weight:500;margin-top:2px;display:block;
-}
-
-/* ── FLOATING CARDS VISUAL ── */
-.cards-scene{
-position:relative;
-width:700px;max-width:100%;
-height:200px;
-margin:64px auto 0;
-animation:fadeUp 0.7s ease 1.3s both;
-}
-
-.gcard{
-position:absolute;
-width:260px;height:155px;
-border-radius:16px;
-padding:18px 22px;
-display:flex;flex-direction:column;justify-content:space-between;
-border:1px solid rgba(255,255,255,0.08);
-box-shadow:0 20px 60px rgba(0,0,0,0.7);
-transition:transform 0.3s;
-}
-
-.gcard-main{
-left:50%;top:0;
-transform:translateX(-50%) rotate(-2deg);
-background:linear-gradient(135deg,#0f1628,#1a2040);
-animation:floatMain 7s ease-in-out infinite;
-z-index:3;
-}
-@keyframes floatMain{
-0%,100%{transform:translateX(-50%) rotate(-2deg) translateY(0)}
-50%{transform:translateX(-50%) rotate(-2deg) translateY(-10px)}
-}
-
-.gcard-left{
-left:5%;top:25px;
-transform:rotate(-10deg);
-background:linear-gradient(135deg,#1a0f28,#2a1040);
-animation:floatLeft 9s ease-in-out infinite 1s;
-z-index:2;opacity:0.65;
-}
-@keyframes floatLeft{
-0%,100%{transform:rotate(-10deg) translateY(0)}
-50%{transform:rotate(-10deg) translateY(-7px)}
-}
-
-.gcard-right{
-right:5%;top:25px;
-transform:rotate(8deg);
-background:linear-gradient(135deg,#0f1e28,#0f2832);
-animation:floatRight 6s ease-in-out infinite 0.5s;
-z-index:2;opacity:0.65;
-}
-@keyframes floatRight{
-0%,100%{transform:rotate(8deg) translateY(0)}
-50%{transform:rotate(8deg) translateY(-12px)}
-}
-
-.gcard-brand{
-font-size:11px;font-weight:700;
-letter-spacing:1.5px;text-transform:uppercase;
-color:rgba(255,255,255,0.4);
-}
-
-.gcard-amount{
-font-family:‘Clash Display’,sans-serif;
-font-size:34px;font-weight:700;
-letter-spacing:-1px;
-color:var(–text);
-}
-
-.gcard-footer{
-display:flex;align-items:center;justify-content:space-between;
-}
-
-.gcard-naira{
-font-size:14px;font-weight:700;
-color:var(–accent);
-font-family:‘Clash Display’,sans-serif;
-}
-
-.live-pill{
-font-size:9px;font-weight:700;
-letter-spacing:1px;text-transform:uppercase;
-background:rgba(13,255,176,0.1);
-border:1px solid rgba(13,255,176,0.2);
-color:var(–accent);
-border-radius:4px;
-padding:3px 7px;
-}
-
-/* ── TICKER ── */
-.ticker-wrap{
-position:relative;z-index:1;
-border-top:1px solid var(–border);
-border-bottom:1px solid var(–border);
-background:var(–surface);
-overflow:hidden;
-padding:13px 0;
-display:flex;
-}
-
-.ticker-track{
-display:flex;
-gap:0;
-animation:scroll 25s linear infinite;
-white-space:nowrap;
-width:max-content;
-}
-
-.t-item{
-display:inline-flex;align-items:center;gap:8px;
-padding:0 28px;
-font-size:13px;color:var(–muted2);
-border-right:1px solid var(–border);
-}
+.stat-num{font-family:‘Clash Display’,sans-serif;font-size:30px;font-weight:700;letter-spacing:-1px;color:var(–text);display:block;}
+.stat-label{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-top:2px;display:block;}
+/* TRUST BADGES */
+.trust-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;animation:fadeUp 0.7s ease 1.25s both;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:6px;background:var(–surface);border:1px solid var(–border);border-radius:6px;padding:6px 12px;font-size:11px;color:var(–muted2);font-weight:500;}
+.trust-badge svg{width:13px;height:13px;stroke:var(–muted2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.trust-divider{width:1px;height:16px;background:var(–border2);}
+/* FLOATING CARDS */
+.cards-scene{position:relative;width:700px;max-width:100%;height:200px;margin:52px auto 0;animation:fadeUp 0.7s ease 1.3s both;}
+.gcard{position:absolute;width:260px;height:155px;border-radius:16px;padding:18px 22px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.7);}
+.gcard-main{left:50%;top:0;transform:translateX(-50%) rotate(-2deg);background:linear-gradient(135deg,#0f1628,#1a2040);animation:floatMain 7s ease-in-out infinite;z-index:3;box-shadow:0 20px 60px rgba(0,0,0,0.8),0 0 30px rgba(13,255,176,0.08),inset 0 1px 0 rgba(13,255,176,0.1);border-color:rgba(13,255,176,0.15);}
+@keyframes floatMain{0%,100%{transform:translateX(-50%) rotate(-2deg) translateY(0)}50%{transform:translateX(-50%) rotate(-2deg) translateY(-10px)}}
+.gcard-left{left:5%;top:25px;transform:rotate(-10deg);background:linear-gradient(135deg,#1a0f28,#2a1040);animation:floatLeft 9s ease-in-out infinite 1s;z-index:2;opacity:0.65;}
+@keyframes floatLeft{0%,100%{transform:rotate(-10deg) translateY(0)}50%{transform:rotate(-10deg) translateY(-7px)}}
+.gcard-right{right:5%;top:25px;transform:rotate(8deg);background:linear-gradient(135deg,#0f1e28,#0f2832);animation:floatRight 6s ease-in-out infinite 0.5s;z-index:2;opacity:0.65;}
+@keyframes floatRight{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(8deg) translateY(-12px)}}
+.gcard-brand{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+.gcard-amount{font-family:‘Clash Display’,sans-serif;font-size:34px;font-weight:700;letter-spacing:-1px;color:var(–text);}
+.gcard-footer{display:flex;align-items:center;justify-content:space-between;}
+.gcard-naira{font-size:14px;font-weight:700;color:var(–accent);font-family:‘Clash Display’,sans-serif;text-shadow:0 0 12px rgba(13,255,176,0.5);}
+.live-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–accent);border-bottom:1px solid rgba(13,255,176,0.4);padding-bottom:1px;}
+/* MOBILE CARD CAROUSEL */
+.mobile-cards{display:none;margin:40px auto 0;width:100%;}
+.mobile-cards-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:0 24px 16px;scrollbar-width:none;}
+.mobile-cards-track::-webkit-scrollbar{display:none;}
+.mobile-gcard{flex-shrink:0;width:240px;height:148px;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:center;border:1px solid rgba(255,255,255,0.08);}
+.mgc1{background:linear-gradient(135deg,#0f1628,#1a2040);border-color:rgba(13,255,176,0.15);box-shadow:0 16px 40px rgba(0,0,0,0.7),0 0 24px rgba(13,255,176,0.07);}
+.mgc2{background:linear-gradient(135deg,#1a0f28,#2a1040);box-shadow:0 16px 40px rgba(0,0,0,0.6);}
+.mgc3{background:linear-gradient(135deg,#0f1e28,#0f2832);box-shadow:0 16px 40px rgba(0,0,0,0.6);}
+.mobile-cards-dots{display:flex;gap:6px;justify-content:center;margin-top:4px;}
+.mdot{width:5px;height:5px;background:var(–border2);transition:background 0.2s,width 0.3s;border-radius:3px;}
+.mdot.active{background:var(–accent);width:14px;box-shadow:0 0 6px var(–accent);}
+/* NEON DIVIDER */
+.neon-div{height:1px;border:none;margin:0;background:linear-gradient(90deg,transparent,rgba(13,255,176,0.15),rgba(0,212,255,0.12),rgba(168,85,247,0.08),transparent);position:relative;z-index:1;}
+/* TICKER */
+.ticker-wrap{position:relative;z-index:1;background:var(–surface);overflow:hidden;padding:13px 0;display:flex;}
+.ticker-track{display:flex;animation:scroll 25s linear infinite;white-space:nowrap;width:max-content;}
+.t-item{display:inline-flex;align-items:center;gap:8px;padding:0 28px;font-size:13px;color:var(–muted2);border-right:1px solid var(–border);}
 .t-item strong{color:var(–text);font-weight:600}
 .t-up{color:var(–accent);font-size:11px;font-weight:700}
-
-@keyframes scroll{
-from{transform:translateX(0)}
-to{transform:translateX(-50%)}
-}
-
-/* ── SECTION SHARED ── */
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* SECTIONS */
 section{position:relative;z-index:1}
-
 .container{max-width:1100px;margin:0 auto;padding:0 28px}
-
-.section-eyebrow{
-display:inline-flex;align-items:center;gap:10px;
-font-size:11px;font-weight:700;
-text-transform:uppercase;letter-spacing:2.5px;
-color:var(–accent);margin-bottom:18px;
-}
-.section-eyebrow::before{
-content:’’;
-width:24px;height:1px;
-background:var(–accent);
-}
-
-h2{
-font-family:‘Clash Display’,sans-serif;
-font-size:clamp(32px,4vw,54px);
-font-weight:700;
-letter-spacing:-2px;
-line-height:1.05;
-margin-bottom:18px;
-}
-
-.section-body{
-color:var(–muted2);font-size:17px;
-font-weight:400;line-height:1.75;
-max-width:460px;
-}
-
-/* ── HOW IT WORKS ── */
-.how{
-padding:130px 0;
-border-top:1px solid var(–border);
-}
-
-.how-top{
-text-align:center;margin-bottom:80px;
-}
-.how-top .section-body{margin:0 auto}
-
-.steps{
-display:grid;grid-template-columns:repeat(3,1fr);
-position:relative;
-}
-
-/* connector line */
-.steps::before{
-content:’’;
-position:absolute;
-top:36px;left:calc(16.66% + 24px);right:calc(16.66% + 24px);
-height:1px;
-background:linear-gradient(90deg,var(–accent),var(–blue),var(–accent));
-opacity:0.2;
-z-index:0;
-}
-
-.step{
-padding:40px 32px;
-position:relative;
-border:1px solid var(–border);
-margin:-1px;
-transition:background 0.3s,border-color 0.3s;
-}
-.step:first-child{border-radius:16px 0 0 16px}
-.step:last-child{border-radius:0 16px 16px 0}
-
-.step:hover{
+.section-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(–accent);margin-bottom:18px;}
+.section-eyebrow::before{content:’’;width:18px;height:1px;background:var(–accent);box-shadow:0 0 6px var(–accent);}
+.section-eyebrow::after{content:‘◆’;font-size:8px;margin-left:2px;opacity:0.6;}
+h2{font-family:‘Clash Display’,sans-serif;font-size:clamp(32px,4vw,54px);font-weight:700;letter-spacing:-2px;line-height:1.05;margin-bottom:18px;}
+.section-body{color:var(–muted2);font-size:17px;font-weight:400;line-height:1.75;max-width:460px;}
+/* RATE ALERT */
+.rate-alert-section{padding:80px 0;position:relative;z-index:1;}
+.rate-alert-inner{
+max-width:780px;margin:0 auto;
 background:var(–surface);
-border-color:var(–border2);
-z-index:1;
-}
-
-.step-num-ring{
-width:48px;height:48px;
-border-radius:12px;
 border:1px solid var(–border2);
-background:var(–surface);
-display:flex;align-items:center;justify-content:center;
-margin-bottom:24px;
-position:relative;z-index:1;
-transition:border-color 0.3s,background 0.3s;
+border-radius:20px;
+padding:48px 52px;
+position:relative;
+overflow:hidden;
 }
-.step:hover .step-num-ring{
-border-color:rgba(13,255,176,0.3);
-background:rgba(13,255,176,0.05);
+.rate-alert-inner::before{
+content:’’;position:absolute;top:0;left:0;right:0;height:1px;
+background:linear-gradient(90deg,transparent,var(–neon-blue),var(–accent),var(–neon-blue),transparent);
+opacity:0.5;
 }
-
-.step-num-ring svg{
-width:22px;height:22px;
-stroke:var(–muted2);
-fill:none;
-stroke-width:1.8;
-stroke-linecap:round;stroke-linejoin:round;
-transition:stroke 0.3s;
+.rate-alert-inner::after{
+content:’’;position:absolute;inset:0;
+background:radial-gradient(ellipse 60% 60% at 50% 0%, rgba(13,255,176,0.04) 0%, transparent 70%);
+pointer-events:none;
 }
-.step:hover .step-num-ring svg{stroke:var(–accent)}
-
-.step-n{
-font-family:‘Clash Display’,sans-serif;
-font-size:72px;font-weight:700;
-color:rgba(255,255,255,0.025);
-position:absolute;bottom:16px;right:20px;
-line-height:1;pointer-events:none;
-letter-spacing:-2px;
-}
-
-.step h3{
-font-family:‘Clash Display’,sans-serif;
-font-size:21px;font-weight:600;
-margin-bottom:12px;letter-spacing:-0.5px;
-}
-
-.step p{
-color:var(–muted);font-size:14px;
-line-height:1.75;font-weight:400;
-}
-
-/* ── RATES ── */
-.rates{
-padding:130px 0;
-border-top:1px solid var(–border);
-}
-
-.rates-layout{
-display:grid;
-grid-template-columns:1fr 1.5fr;
-gap:72px;align-items:start;
-}
-
-.rate-table{
-border:1px solid var(–border2);
-border-radius:18px;overflow:hidden;
-}
-
-.rate-head{
-display:grid;grid-template-columns:1fr auto auto;
-padding:12px 20px;
-background:var(–surface2);
-border-bottom:1px solid var(–border);
-font-size:11px;font-weight:700;
-text-transform:uppercase;letter-spacing:1.5px;
-color:var(–muted);
-gap:16px;
-}
-
-.rate-row{
-display:grid;grid-template-columns:1fr auto auto;
-align-items:center;
-padding:16px 20px;
-border-bottom:1px solid var(–border);
-background:var(–surface);
-gap:16px;
-transition:background 0.2s;
-}
-.rate-row:last-child{border-bottom:none}
-.rate-row:hover{background:var(–surface2)}
-
-.rate-info{display:flex;align-items:center;gap:14px}
-
-.rate-logo{
-width:38px;height:38px;border-radius:10px;
-display:flex;align-items:center;justify-content:center;
-font-family:‘Clash Display’,sans-serif;
-font-size:16px;font-weight:700;
+.ra-top{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;margin-bottom:36px;flex-wrap:wrap;}
+.ra-title-block{}
+.ra-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(–neon-blue);margin-bottom:12px;}
+.ra-eyebrow::before{content:’’;width:14px;height:1px;background:var(–neon-blue);box-shadow:0 0 6px var(–neon-blue);}
+.ra-title{font-family:‘Clash Display’,sans-serif;font-size:28px;font-weight:700;letter-spacing:-1px;line-height:1.1;margin-bottom:8px;}
+.ra-sub{font-size:14px;color:var(–muted);max-width:320px;line-height:1.6;}
+.ra-badge{
 flex-shrink:0;
+background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.18);
+border-radius:10px;padding:14px 18px;text-align:center;
+white-space:nowrap;
 }
+.ra-badge-num{font-family:‘Clash Display’,sans-serif;font-size:26px;font-weight:700;color:var(–neon-blue);display:block;text-shadow:0 0 16px rgba(0,212,255,0.4);}
+.ra-badge-label{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;display:block;}
+.ra-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;position:relative;z-index:1;}
+.ra-field{display:flex;flex-direction:column;gap:6px;}
+.ra-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(–muted);}
+.ra-select,.ra-input{
+background:var(–surface2);border:1px solid var(–border2);
+border-radius:8px;padding:11px 14px;
+color:var(–text);font-family:‘Cabinet Grotesk’,sans-serif;font-size:14px;font-weight:500;
+outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+-webkit-appearance:none;appearance:none;
+width:100%;
+}
+.ra-select:focus,.ra-input:focus{border-color:rgba(0,212,255,0.4);box-shadow:0 0 0 3px rgba(0,212,255,0.08);}
+.ra-select-wrap{position:relative;}
+.ra-select-wrap::after{content:‘▾’;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(–muted);pointer-events:none;font-size:12px;}
+.ra-btn{
+background:var(–neon-blue);color:#000;border:none;
+padding:11px 22px;border-radius:8px;
+font-size:13px;font-weight:800;
+font-family:‘Cabinet Grotesk’,sans-serif;
+cursor:pointer;white-space:nowrap;
+transition:box-shadow 0.2s,transform 0.2s;
+display:flex;align-items:center;gap:7px;
+}
+.ra-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3);}
+.ra-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.ra-success{
+display:none;
+align-items:center;gap:14px;
+background:rgba(13,255,176,0.05);border:1px solid rgba(13,255,176,0.2);
+border-radius:10px;padding:16px 20px;margin-top:16px;
+position:relative;z-index:1;
+}
+.ra-success.visible{display:flex;}
+.ra-success-icon{width:32px;height:32px;background:rgba(13,255,176,0.1);border:1px solid rgba(13,255,176,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ra-success-icon svg{width:16px;height:16px;stroke:var(–accent);fill:none;stroke-width:2.5;}
+.ra-success-text{font-size:13px;color:var(–muted2);line-height:1.5;}
+.ra-success-text strong{color:var(–accent);font-weight:700;}
+.ra-recent{display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap;position:relative;z-index:1;}
+.ra-recent-label{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
+.ra-recent-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.ra-tag{font-size:11px;color:var(–muted2);background:var(–surface2);border:1px solid var(–border);border-radius:5px;padding:3px 10px;cursor:pointer;transition:border-color 0.2s,color 0.2s;}
+.ra-tag:hover{border-color:rgba(0,212,255,0.3);color:var(–neon-blue);}
+@media(max-width:768px){
+.rate-alert-inner{padding:32px 24px;}
+.ra-form{grid-template-columns:1fr;}.ra-btn{width:100%;justify-content:center;}
+.ra-top{flex-direction:column;gap:20px;}
+}
+/* HOW IT WORKS */
+.how{padding:130px 0;}
+.how-top{text-align:center;margin-bottom:80px;}
+.how-top .section-body{margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);position:relative;}
+.steps::before{content:’’;position:absolute;top:36px;left:calc(16.66% + 24px);right:calc(16.66% + 24px);height:1px;background:linear-gradient(90deg,var(–accent),var(–neon-blue),var(–accent));opacity:0.15;z-index:0;}
+.step{padding:40px 32px;position:relative;border:1px solid var(–border);margin:-1px;transition:background 0.3s,border-color 0.3s;}
+.step:first-child{border-radius:16px 0 0 16px}.step:last-child{border-radius:0 16px 16px 0}
+.step:hover{background:var(–surface);border-color:var(–border2);z-index:1;}
+.step-num-ring{width:48px;height:48px;border-radius:10px;border:1px solid var(–border2);background:var(–surface);display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative;z-index:1;transition:border-color 0.3s,background 0.3s,box-shadow 0.3s;}
+.step:hover .step-num-ring{border-color:rgba(13,255,176,0.3);background:rgba(13,255,176,0.04);box-shadow:0 0 16px rgba(13,255,176,0.08);}
+.step-num-ring svg{width:22px;height:22px;stroke:var(–muted2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
+.step:hover .step-num-ring svg{stroke:var(–accent)}
+.step-n{font-family:‘Clash Display’,sans-serif;font-size:72px;font-weight:700;color:rgba(255,255,255,0.025);position:absolute;bottom:16px;right:20px;line-height:1;pointer-events:none;letter-spacing:-2px;}
+.step h3{font-family:‘Clash Display’,sans-serif;font-size:21px;font-weight:600;margin-bottom:12px;letter-spacing:-0.5px;}
+.step p{color:var(–muted);font-size:14px;line-height:1.75;font-weight:400;}
+/* Step mini UI */
+.step-mock{margin-top:24px;background:var(–bg);border:1px solid var(–border2);border-radius:10px;padding:14px 16px;}
+.step-mock-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(–border);font-size:12px;}
+.step-mock-row:last-child{border-bottom:none;padding-bottom:0}
+.step-mock-label{color:var(–muted);font-size:11px;}
+.step-mock-val{font-weight:600;font-size:13px;}
+.step-mock-val.green{color:var(–accent);}
+.step-mock-pill{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(13,255,176,0.08);color:var(–accent);border:1px solid rgba(13,255,176,0.2);border-radius:4px;padding:2px 7px;}
+.upload-zone{border:1px dashed rgba(255,255,255,0.12);border-radius:8px;padding:16px;text-align:center;margin-top:8px;font-size:12px;color:var(–muted);}
+.upload-zone svg{width:18px;height:18px;stroke:var(–muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 6px;display:block;}
+.payout-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.payout-amount{font-family:‘Clash Display’,sans-serif;font-size:22px;font-weight:700;color:var(–accent);text-shadow:0 0 12px rgba(13,255,176,0.4);}
+.payout-time{font-size:11px;color:var(–muted);margin-top:2px;}
+.payout-bank{font-size:12px;color:var(–muted2);margin-top:8px;display:flex;align-items:center;gap:6px;}
+.payout-bank svg{width:12px;height:12px;stroke:var(–accent);fill:none;stroke-width:2;}
+/* RATES */
+.rates{padding:130px 0;}
+.rates-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:72px;align-items:start;}
+.rate-table{border:1px solid var(–border2);border-radius:18px;overflow:hidden;position:relative;}
+.rate-table::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(–accent),transparent);opacity:0.5;z-index:1;}
+.rate-head{display:grid;grid-template-columns:1fr auto auto;padding:12px 20px;background:var(–surface2);border-bottom:1px solid var(–border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(–muted);gap:16px;}
+.rate-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:16px 20px;border-bottom:1px solid var(–border);background:var(–surface);gap:16px;transition:background 0.2s;}
+.rate-row:hover{background:var(–surface2)}
+.rate-info{display:flex;align-items:center;gap:14px}
+.rate-logo{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:‘Clash Display’,sans-serif;font-size:16px;font-weight:700;flex-shrink:0;}
 .rl-amz{background:linear-gradient(135deg,#1a2040,#0f1628);color:#ff9900}
 .rl-itunes{background:linear-gradient(135deg,#2a1040,#1a0f28);color:#fc3c8d}
 .rl-steam{background:linear-gradient(135deg,#0f2832,#0a1820);color:#66c0f4}
 .rl-gplay{background:linear-gradient(135deg,#0f2820,#081f14);color:#4ade80}
 .rl-xbox{background:linear-gradient(135deg,#0a2010,#051508);color:#52b043}
-
 .rate-name{font-weight:600;font-size:14px;margin-bottom:2px}
 .rate-sub{font-size:11px;color:var(–muted)}
-
-.rate-val{
-font-family:‘Clash Display’,sans-serif;
-font-size:15px;font-weight:700;
-color:var(–accent);
-text-align:right;
-white-space:nowrap;
-}
+.rate-val{font-family:‘Clash Display’,sans-serif;font-size:15px;font-weight:700;color:var(–accent);text-align:right;white-space:nowrap;text-shadow:0 0 12px rgba(13,255,176,0.3);}
 .rate-per{font-size:11px;color:var(–muted);text-align:right;margin-top:1px}
-
-.rate-badge-pill{
-font-size:9px;font-weight:700;
-letter-spacing:0.8px;text-transform:uppercase;
-padding:3px 8px;border-radius:5px;
-white-space:nowrap;
-}
+.rate-badge-pill{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap;}
 .rb-hot{background:rgba(255,100,100,0.1);color:#ff6464;border:1px solid rgba(255,100,100,0.2)}
 .rb-fast{background:rgba(13,255,176,0.08);color:var(–accent);border:1px solid rgba(13,255,176,0.2)}
-
-/* ── FEATURES ── */
-.features{
-padding:130px 0;
-border-top:1px solid var(–border);
-}
-
-.feat-header{
-display:flex;justify-content:space-between;
-align-items:flex-end;margin-bottom:64px;gap:32px;
-}
-
-.feat-grid{
-display:grid;
-grid-template-columns:repeat(12,1fr);
-grid-template-rows:auto auto;
-gap:2px;
-background:var(–border);
-border-radius:20px;overflow:hidden;
-}
-
-.feat{
-background:var(–surface);
-padding:36px;
-transition:background 0.3s;
-}
+.rate-table-footer{padding:14px 20px;background:var(–surface2);border-top:1px solid var(–border);display:flex;align-items:center;justify-content:space-between;}
+.rate-footer-text{font-size:12px;color:var(–muted);}
+.rate-footer-link{font-size:12px;font-weight:700;color:var(–accent);text-decoration:none;display:flex;align-items:center;gap:5px;transition:gap 0.2s;letter-spacing:0.3px;}
+.rate-footer-link:hover{gap:9px;}
+.rate-footer-link svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+/* FEATURES */
+.features{padding:130px 0;}
+.feat-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;gap:32px;}
+.feat-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto auto;gap:2px;background:var(–border);border-radius:20px;overflow:hidden;}
+.feat{background:var(–surface);padding:36px;transition:background 0.3s;}
 .feat:hover{background:var(–surface2)}
-
-.feat.f1{grid-column:span 7}
-.feat.f2{grid-column:span 5}
-.feat.f3{grid-column:span 4}
-.feat.f4{grid-column:span 4}
-.feat.f5{grid-column:span 4}
-
-.feat-icon{
-width:46px;height:46px;border-radius:12px;
-background:rgba(255,255,255,0.04);
-border:1px solid var(–border2);
-display:flex;align-items:center;justify-content:center;
-margin-bottom:22px;
-transition:background 0.3s,border-color 0.3s;
-}
-.feat:hover .feat-icon{
-background:rgba(13,255,176,0.06);
-border-color:rgba(13,255,176,0.2);
-}
-.feat-icon svg{
-width:21px;height:21px;stroke:var(–muted2);fill:none;
-stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
-transition:stroke 0.3s;
-}
+.feat.f1{grid-column:span 7}.feat.f2{grid-column:span 5}.feat.f3{grid-column:span 5}.feat.f4{grid-column:span 4}.feat.f5{grid-column:span 3}
+.feat-icon{width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(–border2);display:flex;align-items:center;justify-content:center;margin-bottom:22px;transition:background 0.3s,border-color 0.3s,box-shadow 0.3s;}
+.feat:hover .feat-icon{background:rgba(13,255,176,0.05);border-color:rgba(13,255,176,0.2);box-shadow:0 0 16px rgba(13,255,176,0.08);}
+.feat-icon svg{width:21px;height:21px;stroke:var(–muted2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
 .feat:hover .feat-icon svg{stroke:var(–accent)}
-
-.feat h3{
-font-family:‘Clash Display’,sans-serif;
-font-size:19px;font-weight:600;
-margin-bottom:10px;letter-spacing:-0.3px;
-}
+.feat h3{font-family:‘Clash Display’,sans-serif;font-size:19px;font-weight:600;margin-bottom:10px;letter-spacing:-0.3px;}
 .feat p{color:var(–muted);font-size:14px;line-height:1.75;font-weight:400}
-
-/* Verify widget inside f1 */
-.verify-widget{
-margin-top:24px;
-background:var(–bg);
-border:1px solid var(–border2);
-border-radius:14px;
-padding:20px;
-}
+/* Verify widget */
+.verify-widget{margin-top:24px;background:var(–bg);border:1px solid var(–border2);border-radius:14px;padding:20px;}
 .vw-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(–muted);font-weight:600;margin-bottom:12px}
-.vw-card{
-display:flex;align-items:center;justify-content:space-between;
-padding:12px 16px;
-background:var(–surface2);
-border-radius:10px;
-margin-bottom:12px;
-border:1px solid var(–border);
-}
-.vw-card-name{font-size:14px;font-weight:600}
-.vw-card-sub{font-size:11px;color:var(–muted)}
-.vw-card-amount{
-font-family:‘Clash Display’,sans-serif;
-font-size:20px;font-weight:700;
-color:var(–text);
-}
-.vw-progress{height:3px;background:var(–border2);border-radius:2px;overflow:hidden;margin-bottom:10px}
-.vw-bar{
-height:100%;width:0;
-background:linear-gradient(90deg,var(–accent),#00c48c);
-border-radius:2px;
-animation:verifyBar 2s ease 1.5s forwards;
-}
+.vw-card{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(–surface2);border-radius:10px;margin-bottom:12px;border:1px solid var(–border);}
+.vw-card-name{font-size:14px;font-weight:600}.vw-card-sub{font-size:11px;color:var(–muted)}
+.vw-card-amount{font-family:‘Clash Display’,sans-serif;font-size:20px;font-weight:700;color:var(–text);}
+.vw-progress{height:2px;background:var(–border2);border-radius:1px;overflow:hidden;margin-bottom:10px}
+.vw-bar{height:100%;width:0;background:linear-gradient(90deg,var(–accent),var(–neon-blue));border-radius:1px;animation:verifyBar 2s ease 1.5s forwards;box-shadow:0 0 8px rgba(13,255,176,0.6);}
 @keyframes verifyBar{to{width:100%}}
-.vw-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(–accent);font-weight:600}
-.vw-dot{width:7px;height:7px;background:var(–accent);border-radius:50%;animation:ping 1.5s ease infinite}
-
-/* ── REVIEWS ── */
-.reviews-section{
-padding:130px 0;
-border-top:1px solid var(–border);
-}
+.vw-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(–accent);font-weight:600;}
+.vw-dash{width:12px;height:2px;background:var(–accent);border-radius:1px;box-shadow:0 0 6px var(–accent);animation:dashPulse 1.5s ease-in-out infinite;}
+@keyframes dashPulse{0%,100%{opacity:1;width:12px}50%{opacity:0.4;width:6px}}
+/* Referral widget */
+.referral-widget{margin-top:24px;background:var(–bg);border:1px solid var(–border2);border-radius:14px;padding:18px;}
+.ref-link-row{display:flex;align-items:center;justify-content:space-between;background:var(–surface2);border:1px solid var(–border);border-radius:8px;padding:10px 14px;margin-bottom:14px;}
+.ref-link-text{font-size:12px;color:var(–muted2);font-family:monospace;}
+.ref-copy-btn{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(–accent);background:rgba(13,255,176,0.08);border:1px solid rgba(13,255,176,0.2);border-radius:4px;padding:4px 8px;cursor:pointer;transition:background 0.2s;}
+.ref-copy-btn:hover{background:rgba(13,255,176,0.15);}
+.ref-earnings-row{display:flex;justify-content:space-between;align-items:center;}
+.ref-earn-label{font-size:11px;color:var(–muted)}
+.ref-earn-val{font-family:‘Clash Display’,sans-serif;font-size:20px;font-weight:700;color:var(–accent);text-shadow:0 0 10px rgba(13,255,176,0.3);}
+.ref-friends{font-size:11px;color:var(–muted);margin-top:4px;}
+/* REVIEWS */
+.reviews-section{padding:130px 0;}
 .reviews-top{text-align:center;margin-bottom:64px}
 .reviews-top .section-body{margin:0 auto}
-
-.review-grid{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:2px;background:var(–border);
-border-radius:20px;overflow:hidden;
-}
-
-.review{
-background:var(–surface);padding:32px;
-transition:background 0.2s;
-}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(–border);border-radius:20px;overflow:hidden;}
+.review{background:var(–surface);padding:32px;transition:background 0.2s;}
 .review:hover{background:var(–surface2)}
-
 .stars{display:flex;gap:3px;margin-bottom:16px}
 .star{width:13px;height:13px;fill:var(–gold)}
-
-.review-text{
-font-size:14px;line-height:1.8;
-color:var(–muted2);margin-bottom:22px;
-font-style:italic;font-weight:400;
-}
-
+.review-text{font-size:14px;line-height:1.8;color:var(–muted2);margin-bottom:22px;font-style:italic;font-weight:400;}
 .reviewer{display:flex;align-items:center;gap:12px}
-.av{
-width:38px;height:38px;border-radius:10px;
-display:flex;align-items:center;justify-content:center;
-font-family:‘Clash Display’,sans-serif;font-size:14px;font-weight:700;
-}
-.rv-name{font-size:13px;font-weight:700}
-.rv-meta{font-size:11px;color:var(–muted)}
-
-/* ── CTA ── */
-.cta-section{
-padding:130px 0;
-border-top:1px solid var(–border);
-text-align:center;position:relative;overflow:hidden;
-}
-.cta-glow{
-position:absolute;
-width:700px;height:700px;
-background:radial-gradient(circle,rgba(13,255,176,0.05),transparent 60%);
-top:50%;left:50%;transform:translate(-50%,-50%);
-pointer-events:none;
-}
-
+.av{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:‘Clash Display’,sans-serif;font-size:14px;font-weight:700;}
+.rv-name{font-size:13px;font-weight:700}.rv-meta{font-size:11px;color:var(–muted)}
+/* CTA */
+.cta-section{padding:130px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;width:800px;height:800px;background:radial-gradient(circle at center, rgba(13,255,176,0.06) 0%, transparent 40%),radial-gradient(circle at 40% 60%, rgba(0,212,255,0.04) 0%, transparent 40%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
 .cta-section h2{margin-bottom:18px}
 .cta-section .section-body{margin:0 auto 44px}
-
-.download-row{
-display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
-margin-top:32px;
-}
-
-.dl-btn{
-display:flex;align-items:center;gap:12px;
-background:var(–surface2);
-border:1px solid var(–border2);
-border-radius:12px;padding:14px 22px;
-text-decoration:none;color:var(–text);
-transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
-cursor:none;
-}
-.dl-btn:hover{
-transform:translateY(-3px);
-border-color:rgba(255,255,255,0.18);
-box-shadow:0 8px 30px rgba(0,0,0,0.4);
-}
+.download-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px;}
+.dl-btn{display:flex;align-items:center;gap:12px;background:var(–surface2);border:1px solid var(–border2);border-radius:12px;padding:14px 22px;text-decoration:none;color:var(–text);transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.dl-btn:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.18);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
 .dl-btn svg{width:26px;height:26px;fill:var(–text)}
 .dl-text small{display:block;font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px}
 .dl-text span{font-family:‘Clash Display’,sans-serif;font-size:17px;font-weight:700}
-
-/* ── FOOTER ── */
-footer{
-border-top:1px solid var(–border);
-padding:36px 0;position:relative;z-index:1;
-}
-.foot-inner{
-display:flex;align-items:center;
-justify-content:space-between;gap:24px;flex-wrap:wrap;
-}
+/* FOOTER */
+footer{border-top:1px solid var(–border);padding:36px 0;position:relative;z-index:1;}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
 .foot-links{display:flex;gap:28px;list-style:none}
 .foot-links a{color:var(–muted);text-decoration:none;font-size:13px;transition:color 0.2s}
 .foot-links a:hover{color:var(–text)}
 .foot-copy{font-size:13px;color:var(–muted)}
-
-/* ── SCROLL REVEAL ── */
-.reveal{
-opacity:0;transform:translateY(36px);
-transition:opacity 0.8s ease,transform 0.8s ease;
-}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.8s ease,transform 0.8s ease;}
 .reveal.visible{opacity:1;transform:translateY(0)}
-
-/* ── FLIQO HERO BRAND ANIMATION ── */
-.fliqo-brand-hero{
-position:absolute;
-bottom:60px;left:50%;
-transform:translateX(-50%);
-font-family:‘Clash Display’,sans-serif;
-font-size:clamp(100px,20vw,240px);
-font-weight:700;
-letter-spacing:-8px;
-color:rgba(255,255,255,0.018);
-white-space:nowrap;
-pointer-events:none;
-animation:brandPulse 8s ease-in-out infinite;
-user-select:none;
-}
-
-@keyframes brandPulse{
-0%,100%{opacity:0.6;letter-spacing:-8px}
-50%{opacity:1;letter-spacing:-4px}
-}
-
+/* WATERMARK */
+.fliqo-brand-hero{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-family:‘Clash Display’,sans-serif;font-size:clamp(100px,20vw,240px);font-weight:700;letter-spacing:-8px;color:transparent;-webkit-text-stroke:1px rgba(13,255,176,0.04);white-space:nowrap;pointer-events:none;animation:brandPulse 8s ease-in-out infinite;user-select:none;}
+@keyframes brandPulse{0%,100%{opacity:0.6;letter-spacing:-8px}50%{opacity:1;letter-spacing:-4px}}
 @media(max-width:768px){
-nav{padding:16px 20px}
-.nav-links{display:none}
-.steps{grid-template-columns:1fr}
-.steps::before{display:none}
-.step:first-child{border-radius:16px 16px 0 0}
-.step:last-child{border-radius:0 0 16px 16px}
+nav{padding:16px 20px}.nav-links{display:none}
+.steps{grid-template-columns:1fr}.steps::before{display:none}
+.step:first-child{border-radius:16px 16px 0 0}.step:last-child{border-radius:0 0 16px 16px}
 .rates-layout{grid-template-columns:1fr}
 .feat-grid{grid-template-columns:1fr}
 .feat.f1,.feat.f2,.feat.f3,.feat.f4,.feat.f5{grid-column:span 1}
 .review-grid{grid-template-columns:1fr}
 .feat-header{flex-direction:column;align-items:flex-start}
-.cards-scene{display:none}
-.stats-bar{flex-direction:column}
-.stat{border-right:none;border-bottom:1px solid var(–border)}
-.stat:last-child{border-bottom:none}
-.foot-inner{flex-direction:column;text-align:center}
-.foot-links{justify-content:center}
-.fliqo-brand-hero{display:none}
+.cards-scene{display:none}.mobile-cards{display:block}
+.stats-bar{flex-direction:column}.stat{border-right:none;border-bottom:1px solid var(–border)}.stat:last-child{border-bottom:none}
+.foot-inner{flex-direction:column;text-align:center}.foot-links{justify-content:center}
+.fliqo-brand-hero{display:none}.ambient-blob{opacity:0.08}
 }
 </style>
-
 </head>
-<body>
-
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- NAV -->
-
-<nav>
+<body><div class="ambient">
+  <div class="ambient-blob ab1"></div><div class="ambient-blob ab2"></div>
+  <div class="ambient-blob ab3"></div><div class="ambient-blob ab4"></div>
+</div><!-- NAV --><nav>
   <a href="#" class="logo-wrap">
     <div class="logo-icon">
-      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-        <rect class="logo-bg" width="36" height="36" rx="9" fill="#0dffb0"/>
-        <!-- F letter -->
-        <text x="8" y="26" font-family="sans-serif" font-weight="800" font-size="22" fill="#08080e">F</text>
-        <!-- Arrow dash -->
-        <polyline class="logo-arrow" points="20,14 28,18 20,22"/>
-      </svg>
+      <svg viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#0dffb0"/><text x="8" y="26" font-family="sans-serif" font-weight="800" font-size="22" fill="#08080e">F</text><polyline class="logo-arrow" points="20,14 28,18 20,22"/></svg>
     </div>
-    <div class="logo-text">
-      <span>F</span><span>l</span><span>i</span><span>q</span><span>o</span>
-    </div>
-    <div class="logo-dot"></div>
+    <div class="logo-text"><span>F</span><span>l</span><span>i</span><span>q</span><span>o</span></div>
   </a>
-
   <ul class="nav-links">
     <li><a href="#rates">Live Rates</a></li>
     <li><a href="#how">How it works</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#" class="nav-cta">Get Started</a></li>
   </ul>
-</nav>
-
-<!-- HERO -->
-
-<section class="hero">
-  <div class="hero-mesh"></div>
-  <div class="hero-grid"></div>
-  <div class="fliqo-brand-hero">FLIQO</div>
-
-  <div class="hero-badge">
-    <div class="live-dot"></div>
+</nav><!-- HERO --><section class="hero">
+  <div class="hero-mesh"></div><div class="hero-grid"></div><div class="hero-scanlines"></div>
+  <div class="fliqo-brand-hero">FLIQO</div><div class="hero-badge">
+    <div class="live-indicator"><div class="live-bar"></div><span style="font-size:9px;letter-spacing:1.5px">LIVE</span></div>
     Nigeria's fastest gift card exchange
-  </div>
-
-  <h1 class="hero-title">
+  </div><h1 class="hero-title">
     <span class="word"><span>Your</span></span>
     <span class="word"><span>cards.</span></span>
     <span class="word accent-word"><span>Instant</span></span>
     <span class="word"><span>Naira.</span></span>
-  </h1>
-
-  <p class="hero-sub">
-    Trade Amazon, iTunes, Steam & 22 more gift cards for cash in under 60 seconds. No drama. No waiting. Just Fliqo.
-  </p>
-
-  <div class="hero-actions">
+  </h1><p class="hero-sub">Trade Amazon, iTunes, Steam & 22 more gift cards for cash in under 60 seconds. No drama. No waiting. Just Fliqo.</p><div class="hero-actions">
     <a href="#" class="btn-primary">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Start Trading
+      Start Trading — It's Free
     </a>
     <a href="#rates" class="btn-secondary">
       View Live Rates
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat">
-      <span class="stat-num" data-target="2400000000">₦2.4B+</span>
-      <span class="stat-label">Paid Out</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">180k+</span>
-      <span class="stat-label">Active Traders</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">25+</span>
-      <span class="stat-label">Card Types</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">&lt;60s</span>
-      <span class="stat-label">Avg Payout Time</span>
-    </div>
-  </div>
-
-  <!-- Floating cards -->
-
-  <div class="cards-scene">
-    <div class="gcard gcard-left">
-      <div class="gcard-brand">iTunes</div>
-      <div class="gcard-amount">$200</div>
-      <div class="gcard-footer">
-        <span class="gcard-naira">₦164,000</span>
-        <span class="live-pill">Live</span>
+  </div><div class="hero-microcopy">
+    <div class="micro-item"><div class="micro-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>No sign-up fee</div>
+    <div class="micro-item"><div class="micro-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Instant payout</div>
+    <div class="micro-item"><div class="micro-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Balance checked before trade</div>
+  </div><div class="live-counter-wrap">
+    <div class="counter-pulse"></div>
+    <span id="liveCounter" class="counter-val">1,284</span>
+    <span>trades completed today</span>
+  </div><div class="stats-bar">
+    <div class="stat"><span class="stat-num">₦2.4B+</span><span class="stat-label">Paid Out</span></div>
+    <div class="stat"><span class="stat-num">180k+</span><span class="stat-label">Active Traders</span></div>
+    <div class="stat"><span class="stat-num">25+</span><span class="stat-label">Card Types</span></div>
+    <div class="stat"><span class="stat-num">&lt;60s</span><span class="stat-label">Avg Payout Time</span></div>
+  </div><div class="trust-row">
+    <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>SSL Encrypted</div>
+    <div class="trust-divider"></div>
+    <div class="trust-badge"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>2FA Protected</div>
+    <div class="trust-divider"></div>
+    <div class="trust-badge"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>99.9% Uptime</div>
+    <div class="trust-divider"></div>
+    <div class="trust-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>24/7 Support</div>
+  </div><div class="cards-scene">
+    <div class="gcard gcard-left"><div class="gcard-brand">iTunes</div><div class="gcard-amount">$200</div><div class="gcard-footer"><span class="gcard-naira">₦164,000</span><span class="live-tag">LIVE</span></div></div>
+    <div class="gcard gcard-main"><div class="gcard-brand">Amazon US</div><div class="gcard-amount">$100</div><div class="gcard-footer"><span class="gcard-naira">₦88,500</span><span class="live-tag">LIVE</span></div></div>
+    <div class="gcard gcard-right"><div class="gcard-brand">Steam</div><div class="gcard-amount">$50</div><div class="gcard-footer"><span class="gcard-naira">₦39,000</span><span class="live-tag">LIVE</span></div></div>
+  </div><div class="mobile-cards">
+    <div class="mobile-cards-track" id="mobileTrack">
+      <div class="mobile-gcard mgc1">
+        <div class="gcard-brand">Amazon US</div>
+        <div class="gcard-amount">$100</div>
+        <div class="gcard-footer"><span class="gcard-naira">₦88,500</span><span class="live-tag">LIVE</span></div>
+      </div>
+      <div class="mobile-gcard mgc2">
+        <div class="gcard-brand">iTunes</div>
+        <div class="gcard-amount">$200</div>
+        <div class="gcard-footer"><span class="gcard-naira">₦164,000</span><span class="live-tag">LIVE</span></div>
+      </div>
+      <div class="mobile-gcard mgc3">
+        <div class="gcard-brand">Steam</div>
+        <div class="gcard-amount">$50</div>
+        <div class="gcard-footer"><span class="gcard-naira">₦39,000</span><span class="live-tag">LIVE</span></div>
       </div>
     </div>
-    <div class="gcard gcard-main">
-      <div class="gcard-brand">Amazon US</div>
-      <div class="gcard-amount">$100</div>
-      <div class="gcard-footer">
-        <span class="gcard-naira">₦88,500</span>
-        <span class="live-pill">Live</span>
-      </div>
-    </div>
-    <div class="gcard gcard-right">
-      <div class="gcard-brand">Steam</div>
-      <div class="gcard-amount">$50</div>
-      <div class="gcard-footer">
-        <span class="gcard-naira">₦39,000</span>
-        <span class="live-pill">Live</span>
-      </div>
+    <div class="mobile-cards-dots">
+      <div class="mdot active"></div><div class="mdot"></div><div class="mdot"></div>
     </div>
   </div>
-</section>
-
-<!-- TICKER -->
-
-<div class="ticker-wrap">
+</section><hr class="neon-div"/><!-- TICKER --><div class="ticker-wrap">
   <div class="ticker-track" id="ticker">
     <div class="t-item"><strong>Amazon $100</strong> → ₦88,500 <span class="t-up">▲ 2.1%</span></div>
     <div class="t-item"><strong>iTunes $100</strong> → ₦82,000 <span class="t-up">▲ 0.8%</span></div>
@@ -1105,11 +464,72 @@ nav{padding:16px 20px}
     <div class="t-item"><strong>Nordstrom $100</strong> → ₦73,000 <span class="t-up">▲ 1.1%</span></div>
     <div class="t-item"><strong>Vanilla $50</strong> → ₦38,000 <span class="t-up">▲ 0.6%</span></div>
   </div>
+</div><!-- RATE ALERT --><section class="rate-alert-section">
+  <div class="container">
+    <div class="rate-alert-inner reveal">
+      <div class="ra-top">
+        <div class="ra-title-block">
+          <div class="ra-eyebrow">Rate Alert</div>
+          <div class="ra-title">Get notified when<br/>your rate hits.</div>
+          <p class="ra-sub">Set a target rate for any card. We'll ping you on WhatsApp the moment it's hit — no app needed.</p>
+        </div>
+        <div class="ra-badge">
+          <span class="ra-badge-num" id="alertCount">3,841</span>
+          <span class="ra-badge-label">Active alerts set</span>
+        </div>
+      </div>
+
+  <div class="ra-form" id="raForm">
+    <div class="ra-field">
+      <label class="ra-label">Card Type</label>
+      <div class="ra-select-wrap">
+        <select class="ra-select" id="raCard">
+          <option value="">Select card...</option>
+          <option value="Amazon US">Amazon US</option>
+          <option value="iTunes">iTunes / Apple</option>
+          <option value="Steam">Steam</option>
+          <option value="Google Play">Google Play</option>
+          <option value="Xbox">Xbox</option>
+          <option value="Sephora">Sephora</option>
+          <option value="Vanilla">Vanilla</option>
+        </select>
+      </div>
+    </div>
+    <div class="ra-field">
+      <label class="ra-label">Alert me at (₦ per $100)</label>
+      <input class="ra-input" id="raRate" type="number" placeholder="e.g. 90,000" min="1000" max="999999"/>
+    </div>
+    <div class="ra-field">
+      <label class="ra-label">&nbsp;</label>
+      <button class="ra-btn" onclick="setRateAlert()">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Set Alert
+      </button>
+    </div>
+  </div>
+
+  <div class="ra-success" id="raSuccess">
+    <div class="ra-success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="ra-success-text">
+      <strong id="raSuccessMsg">Alert set for Amazon US at ₦90,000</strong><br/>
+      We'll WhatsApp you the moment it hits. You can set another below.
+    </div>
+  </div>
+
+  <div class="ra-recent">
+    <span class="ra-recent-label">Popular:</span>
+    <div class="ra-recent-tags">
+      <span class="ra-tag" onclick="quickFill('Amazon US','90000')">Amazon @ ₦90k</span>
+      <span class="ra-tag" onclick="quickFill('iTunes','85000')">iTunes @ ₦85k</span>
+      <span class="ra-tag" onclick="quickFill('Steam','82000')">Steam @ ₦82k</span>
+      <span class="ra-tag" onclick="quickFill('Xbox','84000')">Xbox @ ₦84k</span>
+    </div>
+  </div>
 </div>
 
-<!-- HOW IT WORKS -->
 
-<section class="how" id="how">
+</div>
+</section><hr class="neon-div"/><!-- HOW IT WORKS --><section class="how" id="how">
   <div class="container">
     <div class="how-top reveal">
       <div class="section-eyebrow">Process</div>
@@ -1118,209 +538,106 @@ nav{padding:16px 20px}
     </div>
     <div class="steps reveal">
       <div class="step">
-        <div class="step-num-ring">
-          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        </div>
+        <div class="step-num-ring"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
         <h3>Select Your Card</h3>
-        <p>Choose from 25+ gift card brands. Enter the denomination and see your exact Naira payout before you do anything.</p>
+        <p>Choose from 25+ gift card brands and see your exact Naira payout before doing anything.</p>
+        <div class="step-mock">
+          <div class="step-mock-row"><span class="step-mock-label">Card type</span><span class="step-mock-val">Amazon US</span></div>
+          <div class="step-mock-row"><span class="step-mock-label">Denomination</span><span class="step-mock-val">$100</span></div>
+          <div class="step-mock-row"><span class="step-mock-label">You receive</span><span class="step-mock-val green">₦88,500</span></div>
+        </div>
         <div class="step-n">01</div>
       </div>
       <div class="step">
-        <div class="step-num-ring">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </div>
+        <div class="step-num-ring"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
         <h3>Upload the Code</h3>
-        <p>Enter the card PIN or upload a photo. We verify the balance live in real time — zero "already used" nonsense.</p>
+        <p>Enter the card PIN or upload a photo. We verify the balance live — zero "already used" nonsense.</p>
+        <div class="step-mock">
+          <div class="step-mock-row" style="padding-bottom:10px;"><span class="step-mock-label">Card PIN</span><span class="step-mock-pill">Verified ✓</span></div>
+          <div class="upload-zone"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Or upload card photo</div>
+        </div>
         <div class="step-n">02</div>
       </div>
       <div class="step">
-        <div class="step-num-ring">
-          <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
-        </div>
+        <div class="step-num-ring"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg></div>
         <h3>Cash Hits Your Wallet</h3>
-        <p>Naira lands in your Fliqo wallet in under 60 seconds. Withdraw to any Nigerian bank account, anytime.</p>
+        <p>Naira lands in your Fliqo wallet instantly. Withdraw to any Nigerian bank, anytime.</p>
+        <div class="step-mock">
+          <div class="payout-row"><div><div class="payout-amount">₦88,500</div><div class="payout-time">Credited in 38 seconds</div></div><span class="step-mock-pill">Paid</span></div>
+          <div class="payout-bank"><svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>GTBank · Access · Opay · +40 more</div>
+        </div>
         <div class="step-n">03</div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- RATES -->
-
-<section class="rates" id="rates">
+</section><hr class="neon-div"/><!-- RATES --><section class="rates" id="rates">
   <div class="container">
     <div class="rates-layout">
       <div class="reveal">
         <div class="section-eyebrow">Live Rates</div>
         <h2>What you see is what you get.</h2>
         <p class="section-body" style="margin-bottom:36px">We update rates in real time. No fake numbers, no bait-and-switch. Check your rate before you trade.</p>
-        <a href="#" class="btn-primary" style="width:fit-content">
-          Check My Rate
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#" class="btn-primary" style="width:fit-content">Check My Rate <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
-
-```
-  <div class="rate-table reveal">
-    <div class="rate-head">
-      <span>Card</span>
-      <span>Rate / $100</span>
-      <span>Status</span>
-    </div>
-    <div class="rate-row">
-      <div class="rate-info">
-        <div class="rate-logo rl-amz">A</div>
-        <div>
-          <div class="rate-name">Amazon US</div>
-          <div class="rate-sub">Physical · E-code</div>
+      <div class="rate-table reveal">
+        <div class="rate-head"><span>Card</span><span>Rate / $100</span><span>Status</span></div>
+        <div class="rate-row"><div class="rate-info"><div class="rate-logo rl-amz">A</div><div><div class="rate-name">Amazon US</div><div class="rate-sub">Physical · E-code</div></div></div><div><div class="rate-val">₦88,500</div><div class="rate-per">Updated 2m ago</div></div><span class="rate-badge-pill rb-hot">Hot</span></div>
+        <div class="rate-row"><div class="rate-info"><div class="rate-logo rl-itunes">♫</div><div><div class="rate-name">iTunes / Apple</div><div class="rate-sub">US · UK · Canada</div></div></div><div><div class="rate-val">₦82,000</div><div class="rate-per">Updated 4m ago</div></div><span class="rate-badge-pill rb-fast">Fast</span></div>
+        <div class="rate-row"><div class="rate-info"><div class="rate-logo rl-steam">S</div><div><div class="rate-name">Steam</div><div class="rate-sub">Physical · Wallet</div></div></div><div><div class="rate-val">₦79,000</div><div class="rate-per">Updated 1m ago</div></div><span class="rate-badge-pill rb-fast">Fast</span></div>
+        <div class="rate-row"><div class="rate-info"><div class="rate-logo rl-gplay">G</div><div><div class="rate-name">Google Play</div><div class="rate-sub">US · UK</div></div></div><div><div class="rate-val">₦79,000</div><div class="rate-per">Updated 6m ago</div></div><span class="rate-badge-pill rb-fast">Fast</span></div>
+        <div class="rate-row"><div class="rate-info"><div class="rate-logo rl-xbox">X</div><div><div class="rate-name">Xbox</div><div class="rate-sub">US · UK</div></div></div><div><div class="rate-val">₦81,000</div><div class="rate-per">Updated 3m ago</div></div><span class="rate-badge-pill rb-hot">Hot</span></div>
+        <div class="rate-table-footer">
+          <span class="rate-footer-text">Showing 5 of 25+ cards</span>
+          <a href="#" class="rate-footer-link">See all cards <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
-      <div>
-        <div class="rate-val">₦88,500</div>
-        <div class="rate-per">Updated 2m ago</div>
-      </div>
-      <span class="rate-badge-pill rb-hot">Hot</span>
-    </div>
-    <div class="rate-row">
-      <div class="rate-info">
-        <div class="rate-logo rl-itunes">♫</div>
-        <div>
-          <div class="rate-name">iTunes / Apple</div>
-          <div class="rate-sub">US · UK · Canada</div>
-        </div>
-      </div>
-      <div>
-        <div class="rate-val">₦82,000</div>
-        <div class="rate-per">Updated 4m ago</div>
-      </div>
-      <span class="rate-badge-pill rb-fast">Fast</span>
-    </div>
-    <div class="rate-row">
-      <div class="rate-info">
-        <div class="rate-logo rl-steam">S</div>
-        <div>
-          <div class="rate-name">Steam</div>
-          <div class="rate-sub">Physical · Wallet</div>
-        </div>
-      </div>
-      <div>
-        <div class="rate-val">₦79,000</div>
-        <div class="rate-per">Updated 1m ago</div>
-      </div>
-      <span class="rate-badge-pill rb-fast">Fast</span>
-    </div>
-    <div class="rate-row">
-      <div class="rate-info">
-        <div class="rate-logo rl-gplay">G</div>
-        <div>
-          <div class="rate-name">Google Play</div>
-          <div class="rate-sub">US · UK</div>
-        </div>
-      </div>
-      <div>
-        <div class="rate-val">₦79,000</div>
-        <div class="rate-per">Updated 6m ago</div>
-      </div>
-      <span class="rate-badge-pill rb-fast">Fast</span>
-    </div>
-    <div class="rate-row">
-      <div class="rate-info">
-        <div class="rate-logo rl-xbox">X</div>
-        <div>
-          <div class="rate-name">Xbox</div>
-          <div class="rate-sub">US · UK</div>
-        </div>
-      </div>
-      <div>
-        <div class="rate-val">₦81,000</div>
-        <div class="rate-per">Updated 3m ago</div>
-      </div>
-      <span class="rate-badge-pill rb-hot">Hot</span>
     </div>
   </div>
-</div>
-```
-
-  </div>
-</section>
-
-<!-- FEATURES -->
-
-<section class="features" id="features">
+</section><hr class="neon-div"/><!-- FEATURES --><section class="features" id="features">
   <div class="container">
     <div class="feat-header reveal">
-      <div>
-        <div class="section-eyebrow">Why Fliqo</div>
-        <h2>Built to never<br/>cheat you.</h2>
-      </div>
+      <div><div class="section-eyebrow">Why Fliqo</div><h2>Built to never<br/>cheat you.</h2></div>
       <p class="section-body">Every feature exists because of a scam that happened on another platform. We fixed all of them.</p>
     </div>
-
-```
-<div class="feat-grid reveal">
-  <div class="feat f1">
-    <div class="feat-icon">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </div>
-    <h3>Real-Time Card Verification</h3>
-    <p>We check your card balance live before accepting the trade. No more "the card was already used" — that ends with Fliqo.</p>
-    <div class="verify-widget">
-      <div class="vw-label">Live Verification</div>
-      <div class="vw-card">
-        <div>
-          <div class="vw-card-name">Amazon US · Physical</div>
-          <div class="vw-card-sub">Balance confirmed in real time</div>
+    <div class="feat-grid reveal">
+      <div class="feat f1">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Real-Time Card Verification</h3>
+        <p>We check your card balance live before accepting the trade. No more "the card was already used" — that ends with Fliqo.</p>
+        <div class="verify-widget">
+          <div class="vw-label">Live Verification</div>
+          <div class="vw-card"><div><div class="vw-card-name">Amazon US · Physical</div><div class="vw-card-sub">Balance confirmed in real time</div></div><div class="vw-card-amount">$100</div></div>
+          <div class="vw-progress"><div class="vw-bar"></div></div>
+          <div class="vw-status"><div class="vw-dash"></div>Crediting ₦88,500 to wallet...</div>
         </div>
-        <div class="vw-card-amount">$100</div>
       </div>
-      <div class="vw-progress"><div class="vw-bar"></div></div>
-      <div class="vw-status">
-        <div class="vw-dot"></div>
-        Crediting ₦88,500 to wallet...
+      <div class="feat f2">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Under 60 Seconds</h3>
+        <p>From card upload to wallet credit. Verified, processed, and paid faster than any platform in Nigeria.</p>
+      </div>
+      <div class="feat f3">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>Referral Rewards</h3>
+        <p>Earn a cut of every trade your referrals make. Real passive income, automatically tracked.</p>
+        <div class="referral-widget">
+          <div class="ref-link-row"><span class="ref-link-text">fliqo.ng/ref/adaeze99</span><button class="ref-copy-btn" onclick="this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button></div>
+          <div class="ref-earnings-row"><div><div class="ref-earn-label">This month's earnings</div><div class="ref-friends">From 14 active referrals</div></div><div class="ref-earn-val">₦12,400</div></div>
+        </div>
+      </div>
+      <div class="feat f4">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3>Direct Bank Withdrawal</h3>
+        <p>Wallet balance goes straight to any Nigerian bank. No locked funds, no processing delays.</p>
+      </div>
+      <div class="feat f5">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3>Trade Receipts</h3>
+        <p>Every trade gets a timestamped receipt. Screenshot it, share it, or dispute with it.</p>
       </div>
     </div>
   </div>
-
-  <div class="feat f2">
-    <div class="feat-icon">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    </div>
-    <h3>Under 60 Seconds</h3>
-    <p>From card upload to wallet credit. Verified, processed, and paid faster than any platform in Nigeria.</p>
-  </div>
-
-  <div class="feat f3">
-    <div class="feat-icon">
-      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-    </div>
-    <h3>Direct Bank Withdrawal</h3>
-    <p>Wallet balance goes straight to any Nigerian bank. No locked funds, no processing delays.</p>
-  </div>
-
-  <div class="feat f4">
-    <div class="feat-icon">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-    </div>
-    <h3>Trade Receipts</h3>
-    <p>Every trade gets a timestamped receipt. Share it, screenshot it, or dispute with it.</p>
-  </div>
-
-  <div class="feat f5">
-    <div class="feat-icon">
-      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-    </div>
-    <h3>Referral Rewards</h3>
-    <p>Earn a percentage of every trade your referrals make. Passive income from sharing Fliqo.</p>
-  </div>
-</div>
-```
-
-  </div>
-</section>
-
-<!-- REVIEWS -->
-
-<section class="reviews-section">
+</section><hr class="neon-div"/><!-- REVIEWS --><section class="reviews-section">
   <div class="container">
     <div class="reviews-top reveal">
       <div class="section-eyebrow">Reviews</div>
@@ -1329,155 +646,114 @@ nav{padding:16px 20px}
     </div>
     <div class="review-grid reveal">
       <div class="review">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
+        <div class="stars"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <p class="review-text">"I lost $500 to GiftCardsToNaira before. Fliqo shows me the balance before accepting my card. I'll never go back to anything else."</p>
-        <div class="reviewer">
-          <div class="av" style="background:linear-gradient(135deg,#0f2820,#061510);color:var(--accent)">AO</div>
-          <div>
-            <div class="rv-name">Adaeze Okonkwo</div>
-            <div class="rv-meta">Lagos · 142 trades</div>
-          </div>
-        </div>
+        <div class="reviewer"><div class="av" style="background:linear-gradient(135deg,#0f2820,#061510);color:var(--accent)">AO</div><div><div class="rv-name">Adaeze Okonkwo</div><div class="rv-meta">Lagos · 142 trades</div></div></div>
       </div>
       <div class="review">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
+        <div class="stars"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <p class="review-text">"₦47,000 in my wallet in 38 seconds. I timed it. The receipt came immediately. This is exactly how gift card trading should work."</p>
-        <div class="reviewer">
-          <div class="av" style="background:linear-gradient(135deg,#1a1040,#0d0828);color:#818cf8">EB</div>
-          <div>
-            <div class="rv-name">Emeka Balogun</div>
-            <div class="rv-meta">Abuja · 89 trades</div>
-          </div>
-        </div>
+        <div class="reviewer"><div class="av" style="background:linear-gradient(135deg,#1a1040,#0d0828);color:#818cf8">EB</div><div><div class="rv-name">Emeka Balogun</div><div class="rv-meta">Abuja · 89 trades</div></div></div>
       </div>
       <div class="review">
-        <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
+        <div class="stars"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <p class="review-text">"The live rate ticker is what sold me. I can see exactly what my iTunes card is worth before I even log in. Full transparency."</p>
-        <div class="reviewer">
-          <div class="av" style="background:linear-gradient(135deg,#2a1010,#180808);color:#f87171">FI</div>
-          <div>
-            <div class="rv-name">Fatima Ibrahim</div>
-            <div class="rv-meta">Kano · 211 trades</div>
-          </div>
-        </div>
+        <div class="reviewer"><div class="av" style="background:linear-gradient(135deg,#2a1010,#180808);color:#f87171">FI</div><div><div class="rv-name">Fatima Ibrahim</div><div class="rv-meta">Kano · 211 trades</div></div></div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- CTA -->
-
-<section class="cta-section">
+</section><hr class="neon-div"/><!-- CTA --><section class="cta-section">
   <div class="cta-glow"></div>
   <div class="container reveal">
     <div class="section-eyebrow" style="justify-content:center;margin-bottom:18px">Get Started Free</div>
     <h2>Your gift cards are<br/>worth more on Fliqo.</h2>
     <p class="section-body">Join 180,000+ Nigerians trading smarter. Download the app or trade on the web — no cost to sign up.</p>
-    <a href="#" class="btn-primary" style="margin:0 auto;width:fit-content;font-size:16px;padding:16px 36px">
-      Start Trading Now
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+    <a href="#" class="btn-primary" style="margin:0 auto;width:fit-content;font-size:16px;padding:16px 36px">Start Trading Now <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     <div class="download-row">
-      <a href="#" class="dl-btn">
-        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <div class="dl-text"><small>Download on</small><span>App Store</span></div>
-      </a>
-      <a href="#" class="dl-btn">
-        <svg viewBox="0 0 24 24"><path d="M3.18 23.76c.28.15.59.19.9.12l12.39-7.17-2.54-2.54-10.75 9.59zM.5 1.48C.2 1.79.02 2.27.02 2.9v18.2c0 .63.18 1.11.49 1.42l.07.07 10.2-10.2v-.24L.57 1.41.5 1.48zM20.38 10.43l-2.9-1.67-2.84 2.83 2.84 2.84 2.91-1.68c.83-.48.83-1.26-.01-1.32zM3.18.24l12.39 7.17-2.54 2.54L2.28.36C2.57.2 2.9.09 3.18.24z"/></svg>
-        <div class="dl-text"><small>Get it on</small><span>Google Play</span></div>
-      </a>
+      <a href="#" class="dl-btn"><svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><div class="dl-text"><small>Download on</small><span>App Store</span></div></a>
+      <a href="#" class="dl-btn"><svg viewBox="0 0 24 24"><path d="M3.18 23.76c.28.15.59.19.9.12l12.39-7.17-2.54-2.54-10.75 9.59zM.5 1.48C.2 1.79.02 2.27.02 2.9v18.2c0 .63.18 1.11.49 1.42l.07.07 10.2-10.2v-.24L.57 1.41.5 1.48zM20.38 10.43l-2.9-1.67-2.84 2.83 2.84 2.84 2.91-1.68c.83-.48.83-1.26-.01-1.32zM3.18.24l12.39 7.17-2.54 2.54L2.28.36C2.57.2 2.9.09 3.18.24z"/></svg><div class="dl-text"><small>Get it on</small><span>Google Play</span></div></a>
     </div>
   </div>
-</section>
-
-<!-- FOOTER -->
-
-<footer>
+</section><!-- FOOTER --><footer>
   <div class="container">
     <div class="foot-inner">
       <a href="#" class="logo-wrap">
-        <div class="logo-icon">
-          <svg viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#0dffb0"/><text x="8" y="26" font-family="sans-serif" font-weight="800" font-size="22" fill="#08080e">F</text><polyline points="20,14 28,18 20,22" stroke="#08080e" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
-        </div>
-        <div class="logo-text">
-          <span>F</span><span>l</span><span>i</span><span>q</span><span>o</span>
-        </div>
-        <div class="logo-dot"></div>
+        <div class="logo-icon"><svg viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#0dffb0"/><text x="8" y="26" font-family="sans-serif" font-weight="800" font-size="22" fill="#08080e">F</text><polyline points="20,14 28,18 20,22" stroke="#08080e" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+        <div class="logo-text"><span>F</span><span>l</span><span>i</span><span>q</span><span>o</span></div>
       </a>
-      <ul class="foot-links">
-        <li><a href="#">Rates</a></li>
-        <li><a href="#">How it works</a></li>
-        <li><a href="#">Support</a></li>
-        <li><a href="#">Privacy</a></li>
-        <li><a href="#">Terms</a></li>
-      </ul>
+      <ul class="foot-links"><li><a href="#">Rates</a></li><li><a href="#">How it works</a></li><li><a href="#">Support</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul>
       <p class="foot-copy">© 2025 Fliqo. Built for Nigeria.</p>
     </div>
   </div>
-</footer>
-
-<script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cursor.style.left=mx+'px';cursor.style.top=my+'px';
-});
-
-function animRing(){
-  rx+=(mx-rx)*0.12;
-  ry+=(my-ry)*0.12;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(animRing);
-}animRing();
-
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cursor.style.transform='translate(-50%,-50%) scale(2.5)';
-    ring.style.width='56px';ring.style.height='56px';
+</footer><script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 100); obs.unobserve(e.target); }
   });
-  el.addEventListener('mouseleave',()=>{
-    cursor.style.transform='translate(-50%,-50%) scale(1)';
-    ring.style.width='36px';ring.style.height='36px';
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const t = document.getElementById('ticker');
+t.innerHTML += t.innerHTML;
+
+// Live counter ticking up
+const counterEl = document.getElementById('liveCounter');
+let count = 1284;
+function tick() {
+  count += Math.floor(Math.random() * 3) + 1;
+  counterEl.textContent = count.toLocaleString();
+  setTimeout(tick, Math.random() * 4000 + 2000);
+}
+setTimeout(tick, 3000);
+
+// Alert count ticks up slowly
+const alertEl = document.getElementById('alertCount');
+if (alertEl) {
+  let ac = 3841;
+  setInterval(() => {
+    ac += Math.random() < 0.3 ? 1 : 0;
+    alertEl.textContent = ac.toLocaleString();
+  }, 8000);
+}
+
+// Rate alert form
+function setRateAlert() {
+  const card = document.getElementById('raCard').value;
+  const rate = document.getElementById('raRate').value;
+  if (!card || !rate) {
+    document.getElementById('raCard').style.borderColor = 'rgba(255,100,100,0.5)';
+    document.getElementById('raRate').style.borderColor = 'rgba(255,100,100,0.5)';
+    setTimeout(() => {
+      document.getElementById('raCard').style.borderColor = '';
+      document.getElementById('raRate').style.borderColor = '';
+    }, 1200);
+    return;
+  }
+  const formatted = parseInt(rate).toLocaleString();
+  document.getElementById('raSuccessMsg').textContent = `Alert set for ${card} at ₦${formatted}`;
+  document.getElementById('raSuccess').classList.add('visible');
+  document.getElementById('raCard').value = '';
+  document.getElementById('raRate').value = '';
+  setTimeout(() => document.getElementById('raSuccess').classList.remove('visible'), 5000);
+}
+
+function quickFill(card, rate) {
+  const sel = document.getElementById('raCard');
+  const inp = document.getElementById('raRate');
+  if (!sel || !inp) return;
+  sel.value = card;
+  inp.value = rate;
+  inp.focus();
+}
+
+// Mobile carousel dots
+const track = document.getElementById('mobileTrack');
+if (track) {
+  const dots = document.querySelectorAll('.mdot');
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / 254);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
   });
-});
-
-// Scroll reveal
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{
-    if(e.isIntersecting){
-      setTimeout(()=>e.target.classList.add('visible'),i*100);
-      obs.unobserve(e.target);
-    }
-  });
-},{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-// Ticker duplicate
-const t=document.getElementById('ticker');
-t.innerHTML+=t.innerHTML;
-</script>
-
-</body>
+}
+</script></body>
 </html>
